@@ -1,4 +1,3 @@
-# Copyright (c) OpenMMLab. All rights reserved.
 import mmcv
 import numpy as np
 
@@ -14,10 +13,9 @@ class LoadMultiViewImageFromFiles(object):
     Expects results['img_filename'] to be a list of filenames.
 
     Args:
-        to_float32 (bool, optional): Whether to convert the img to float32.
+        to_float32 (bool): Whether to convert the img to float32.
             Defaults to False.
-        color_type (str, optional): Color type of the file.
-            Defaults to 'unchanged'.
+        color_type (str): Color type of the file. Defaults to 'unchanged'.
     """
 
     def __init__(self, to_float32=False, color_type='unchanged'):
@@ -31,7 +29,7 @@ class LoadMultiViewImageFromFiles(object):
             results (dict): Result dict containing multi-view image filenames.
 
         Returns:
-            dict: The result dict containing the multi-view image data.
+            dict: The result dict containing the multi-view image data. \
                 Added keys and values are described below.
 
                 - filename (str): Multi-view image filenames.
@@ -49,7 +47,7 @@ class LoadMultiViewImageFromFiles(object):
         if self.to_float32:
             img = img.astype(np.float32)
         results['filename'] = filename
-        # unravel to list, see `DefaultFormatBundle` in formatting.py
+        # unravel to list, see `DefaultFormatBundle` in formating.py
         # which will transpose each image separately and then stack into array
         results['img'] = [img[..., i] for i in range(img.shape[-1])]
         results['img_shape'] = img.shape
@@ -78,7 +76,7 @@ class LoadImageFromFileMono3D(LoadImageFromFile):
     detection, additional camera parameters need to be loaded.
 
     Args:
-        kwargs (dict): Arguments are the same as those in
+        kwargs (dict): Arguments are the same as those in \
             :class:`LoadImageFromFile`.
     """
 
@@ -103,20 +101,17 @@ class LoadPointsFromMultiSweeps(object):
     This is usually used for nuScenes dataset to utilize previous sweeps.
 
     Args:
-        sweeps_num (int, optional): Number of sweeps. Defaults to 10.
-        load_dim (int, optional): Dimension number of the loaded points.
-            Defaults to 5.
-        use_dim (list[int], optional): Which dimension to use.
-            Defaults to [0, 1, 2, 4].
-        file_client_args (dict, optional): Config dict of file clients,
-            refer to
+        sweeps_num (int): Number of sweeps. Defaults to 10.
+        load_dim (int): Dimension number of the loaded points. Defaults to 5.
+        use_dim (list[int]): Which dimension to use. Defaults to [0, 1, 2, 4].
+        file_client_args (dict): Config dict of file clients, refer to
             https://github.com/open-mmlab/mmcv/blob/master/mmcv/fileio/file_client.py
             for more details. Defaults to dict(backend='disk').
-        pad_empty_sweeps (bool, optional): Whether to repeat keyframe when
+        pad_empty_sweeps (bool): Whether to repeat keyframe when
             sweeps is empty. Defaults to False.
-        remove_close (bool, optional): Whether to remove close points.
+        remove_close (bool): Whether to remove close points.
             Defaults to False.
-        test_mode (bool, optional): If `test_mode=True`, it will not
+        test_mode (bool): If test_model=True used for testing, it will not
             randomly sample sweeps but select the nearest N frames.
             Defaults to False.
     """
@@ -165,7 +160,7 @@ class LoadPointsFromMultiSweeps(object):
 
         Args:
             points (np.ndarray | :obj:`BasePoints`): Sweep points.
-            radius (float, optional): Radius below which points are removed.
+            radius (float): Radius below which points are removed.
                 Defaults to 1.0.
 
         Returns:
@@ -186,14 +181,14 @@ class LoadPointsFromMultiSweeps(object):
         """Call function to load multi-sweep point clouds from files.
 
         Args:
-            results (dict): Result dict containing multi-sweep point cloud
+            results (dict): Result dict containing multi-sweep point cloud \
                 filenames.
 
         Returns:
-            dict: The result dict containing the multi-sweep points data.
+            dict: The result dict containing the multi-sweep points data. \
                 Added key and value are described below.
 
-                - points (np.ndarray | :obj:`BasePoints`): Multi-sweep point
+                - points (np.ndarray | :obj:`BasePoints`): Multi-sweep point \
                     cloud arrays.
         """
         points = results['points']
@@ -247,8 +242,8 @@ class PointSegClassMapping(object):
 
     Args:
         valid_cat_ids (tuple[int]): A tuple of valid category.
-        max_cat_id (int, optional): The max possible cat_id in input
-            segmentation mask. Defaults to 40.
+        max_cat_id (int): The max possible cat_id in input segmentation mask.
+            Defaults to 40.
     """
 
     def __init__(self, valid_cat_ids, max_cat_id=40):
@@ -272,7 +267,7 @@ class PointSegClassMapping(object):
             results (dict): Result dict containing point semantic masks.
 
         Returns:
-            dict: The result dict containing the mapped category ids.
+            dict: The result dict containing the mapped category ids. \
                 Updated key and value are described below.
 
                 - pts_semantic_mask (np.ndarray): Mapped semantic masks.
@@ -311,7 +306,7 @@ class NormalizePointsColor(object):
             results (dict): Result dict containing point clouds data.
 
         Returns:
-            dict: The result dict containing the normalized points.
+            dict: The result dict containing the normalized points. \
                 Updated key and value are described below.
 
                 - points (:obj:`BasePoints`): Points after color normalization.
@@ -338,7 +333,7 @@ class NormalizePointsColor(object):
 class LoadPointsFromFile(object):
     """Load Points From File.
 
-    Load points from file.
+    Load sunrgbd and scannet points from file.
 
     Args:
         coord_type (str): The type of coordinates of points cloud.
@@ -346,17 +341,14 @@ class LoadPointsFromFile(object):
             - 'LIDAR': Points in LiDAR coordinates.
             - 'DEPTH': Points in depth coordinates, usually for indoor dataset.
             - 'CAMERA': Points in camera coordinates.
-        load_dim (int, optional): The dimension of the loaded points.
+        load_dim (int): The dimension of the loaded points.
             Defaults to 6.
-        use_dim (list[int], optional): Which dimensions of the points to use.
+        use_dim (list[int]): Which dimensions of the points to be used.
             Defaults to [0, 1, 2]. For KITTI dataset, set use_dim=4
             or use_dim=[0, 1, 2, 3] to use the intensity dimension.
-        shift_height (bool, optional): Whether to use shifted height.
-            Defaults to False.
-        use_color (bool, optional): Whether to use color features.
-            Defaults to False.
-        file_client_args (dict, optional): Config dict of file clients,
-            refer to
+        shift_height (bool): Whether to use shifted height. Defaults to False.
+        use_color (bool): Whether to use color features. Defaults to False.
+        file_client_args (dict): Config dict of file clients, refer to
             https://github.com/open-mmlab/mmcv/blob/master/mmcv/fileio/file_client.py
             for more details. Defaults to dict(backend='disk').
     """
@@ -412,7 +404,7 @@ class LoadPointsFromFile(object):
             results (dict): Result dict containing point clouds data.
 
         Returns:
-            dict: The result dict containing the point clouds data.
+            dict: The result dict containing the point clouds data. \
                 Added key and value are described below.
 
                 - points (:obj:`BasePoints`): Point clouds data.
@@ -422,6 +414,20 @@ class LoadPointsFromFile(object):
         points = points.reshape(-1, self.load_dim)
         points = points[:, self.use_dim]
         attribute_dims = None
+
+        # import open3d as o3d
+        # from open3d import geometry
+
+        # # visualize xenomatix pointcloud
+
+        # # init visualizer
+        # axis_pcd = o3d.geometry.TriangleMesh.create_coordinate_frame(size=1.0, origin=[0, 0, 0])
+
+        # xeno_pc = o3d.geometry.PointCloud()
+        # xeno_pc.points = o3d.utility.Vector3dVector(points[:, :3])
+        # xeno_pc.colors = o3d.utility.Vector3dVector([[1, 0, 0] for _ in range(points.shape[0])])
+
+        # o3d.visualization.draw_geometries([axis_pcd, xeno_pc], window_name="ego frame")
 
         if self.shift_height:
             floor_height = np.percentile(points[:, 2], 0.99)
@@ -461,12 +467,107 @@ class LoadPointsFromFile(object):
 
 
 @PIPELINES.register_module()
-class LoadPointsFromDict(LoadPointsFromFile):
-    """Load Points From Dict."""
+class LoadPointsFromArray(object):
+    """Load Points From Array (for usage in ROS)
+
+    Args:
+        coord_type (str): The type of coordinates of points cloud.
+            Available options includes:
+            - 'LIDAR': Points in LiDAR coordinates.
+            - 'DEPTH': Points in depth coordinates, usually for indoor dataset.
+            - 'CAMERA': Points in camera coordinates.
+        load_dim (int): The dimension of the loaded points.
+            Defaults to 6.
+        use_dim (list[int]): Which dimensions of the points to be used.
+            Defaults to [0, 1, 2]. For KITTI dataset, set use_dim=4
+            or use_dim=[0, 1, 2, 3] to use the intensity dimension.
+        shift_height (bool): Whether to use shifted height. Defaults to False.
+        use_color (bool): Whether to use color features. Defaults to False.
+        file_client_args (dict): Config dict of file clients, refer to
+            https://github.com/open-mmlab/mmcv/blob/master/mmcv/fileio/file_client.py
+            for more details. Defaults to dict(backend='disk').
+    """
+
+    def __init__(self,
+                 coord_type,
+                 load_dim=6,
+                 use_dim=[0, 1, 2],
+                 shift_height=False,
+                 use_color=False):
+        self.shift_height = shift_height
+        self.use_color = use_color
+        if isinstance(use_dim, int):
+            use_dim = list(range(use_dim))
+        assert max(use_dim) < load_dim, \
+            f'Expect all used dimensions < {load_dim}, got {use_dim}'
+        assert coord_type in ['CAMERA', 'LIDAR', 'DEPTH']
+
+        self.coord_type = coord_type
+        self.load_dim = load_dim
+        self.use_dim = use_dim
 
     def __call__(self, results):
-        assert 'points' in results
+        """Call function to load points data from file.
+
+        Args:
+            results (dict): Result dict containing point clouds data.
+
+        Returns:
+            dict: The result dict containing the point clouds data. \
+                Added key and value are described below.
+
+                - points (:obj:`BasePoints`): Point clouds data.
+        """
+        points = results['pts_array']
+        points = points.reshape(-1, self.load_dim)
+        points = points[:, self.use_dim]
+
+        # print(points[0]) # NOTE: added
+        # points[:, 3] /= np.amax(points, 0)[3]
+        # points[:, 3][points[:, 3] < 1e-4] = 0
+        # print('Current points range: ({}, {}, {}, {}, {}, {})'.format( 
+        #                 np.amin(points, 0)[0], np.amin(points, 0)[1], np.amin(points, 0)[2],
+        #                 np.amax(points, 0)[0], np.amax(points, 0)[1], np.amax(points, 0)[2]))
+        # print('Intensity range: ({}, {})'.format( 
+        #                 np.amin(points, 0)[3], np.amax(points, 0)[3]))
+
+        attribute_dims = None
+
+        if self.shift_height:
+            floor_height = np.percentile(points[:, 2], 0.99)
+            height = points[:, 2] - floor_height
+            points = np.concatenate(
+                [points[:, :3],
+                 np.expand_dims(height, 1), points[:, 3:]], 1)
+            attribute_dims = dict(height=3)
+
+        if self.use_color:
+            assert len(self.use_dim) >= 6
+            if attribute_dims is None:
+                attribute_dims = dict()
+            attribute_dims.update(
+                dict(color=[
+                    points.shape[1] - 3,
+                    points.shape[1] - 2,
+                    points.shape[1] - 1,
+                ]))
+
+        points_class = get_points_type(self.coord_type)
+        points = points_class(
+            points, points_dim=points.shape[-1], attribute_dims=attribute_dims)
+        results['points'] = points
+
         return results
+
+    def __repr__(self):
+        """str: Return a string that describes the module."""
+        repr_str = self.__class__.__name__ + '('
+        repr_str += f'shift_height={self.shift_height}, '
+        repr_str += f'use_color={self.use_color}, '
+        repr_str += f'load_dim={self.load_dim}, '
+        repr_str += f'use_dim={self.use_dim})'
+        return repr_str
+
 
 
 @PIPELINES.register_module()

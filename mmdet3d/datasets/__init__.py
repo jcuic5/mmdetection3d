@@ -1,4 +1,3 @@
-# Copyright (c) OpenMMLab. All rights reserved.
 from mmdet.datasets.builder import build_dataloader
 from .builder import DATASETS, build_dataset
 from .custom_3d import Custom3DDataset
@@ -9,15 +8,14 @@ from .lyft_dataset import LyftDataset
 from .nuscenes_dataset import NuScenesDataset
 from .nuscenes_mono_dataset import NuScenesMonoDataset
 # yapf: disable
-from .pipelines import (AffineResize, BackgroundPointsFilter, GlobalAlignment,
+from .pipelines import (BackgroundPointsFilter, GlobalAlignment,
                         GlobalRotScaleTrans, IndoorPatchPointSample,
                         IndoorPointSample, LoadAnnotations3D,
-                        LoadPointsFromDict, LoadPointsFromFile,
-                        LoadPointsFromMultiSweeps, NormalizePointsColor,
-                        ObjectNameFilter, ObjectNoise, ObjectRangeFilter,
-                        ObjectSample, PointSample, PointShuffle,
-                        PointsRangeFilter, RandomDropPointsColor, RandomFlip3D,
-                        RandomJitterPoints, RandomShiftScale,
+                        LoadPointsFromFile, LoadPointsFromMultiSweeps,
+                        NormalizePointsColor, ObjectNameFilter, ObjectNoise,
+                        ObjectRangeFilter, ObjectSample, PointSample,
+                        PointShuffle, PointsRangeFilter, RandomDropPointsColor,
+                        RandomFlip3D, RandomJitterPoints,
                         VoxelBasedPointSampler)
 # yapf: enable
 from .s3dis_dataset import S3DISDataset, S3DISSegDataset
@@ -26,6 +24,7 @@ from .semantickitti_dataset import SemanticKITTIDataset
 from .sunrgbd_dataset import SUNRGBDDataset
 from .utils import get_loading_pipeline
 from .waymo_dataset import WaymoDataset
+from .pandaset_dataset import PandasetDataset
 
 __all__ = [
     'KittiDataset', 'KittiMonoDataset', 'build_dataloader', 'DATASETS',
@@ -39,6 +38,5 @@ __all__ = [
     'Custom3DDataset', 'Custom3DSegDataset', 'LoadPointsFromMultiSweeps',
     'WaymoDataset', 'BackgroundPointsFilter', 'VoxelBasedPointSampler',
     'get_loading_pipeline', 'RandomDropPointsColor', 'RandomJitterPoints',
-    'ObjectNameFilter', 'AffineResize', 'RandomShiftScale',
-    'LoadPointsFromDict'
+    'ObjectNameFilter', 'PandasetDataset'
 ]
